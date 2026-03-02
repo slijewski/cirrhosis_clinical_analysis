@@ -63,14 +63,7 @@ The associated application (located in `app/app.py`) provides an interactive int
 
 ### Installation
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-repo/cirrhosis-clinical-analysis.git
-   cd cirrhosis-clinical-analysis
-   ```
-
-2. Install dependencies:
+1. Install dependencies:
 
    ```bash
    # Using uv (recommended)
@@ -85,6 +78,10 @@ The associated application (located in `app/app.py`) provides an interactive int
 To launch the interactive risk prediction tool:
 
 ```bash
+# Using uv (recommended)
+uv run streamlit run app/app.py
+
+# Or using streamlit directly
 streamlit run app/app.py
 ```
 
