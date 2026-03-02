@@ -2,20 +2,17 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import os
+
 
 st.set_page_config(
     page_title="Clinical Risk Prediction – Cirrhosis",
     layout="centered"
 )
 
-import os
-
-# Get directory of current script
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Models are in '../models' relative to 'app/'
 models_dir = os.path.join(BASE_DIR, "..", "models")
 
-# Load model (Pipeline)
 model_path = os.path.join(models_dir, "rf_model.pkl")
 model = joblib.load(model_path)
 
@@ -29,9 +26,6 @@ based on clinical and laboratory parameters.
 
 st.divider()
 
-# ===============================
-# Input form
-# ===============================
 st.header("Patient Clinical Data")
 
 age = st.slider("Age (years)", 20, 90, 55)
@@ -52,17 +46,11 @@ spiders = st.selectbox("Spiders", ["N", "Y"])
 ascites = st.selectbox("Ascites (Fluid in abdomen)", ["N", "Y"])
 edema = st.selectbox("Edema (Swelling)", ["N", "S", "Y"])
 
-
-
-
 drug = st.selectbox(
     "Treatment",
     ["D-penicillamine", "Placebo"]
 )
 
-# ===============================
-# Prepare input
-# ===============================
 input_df = pd.DataFrame([{
     "Age": age,
     "Sex": sex,
@@ -83,12 +71,7 @@ input_df = pd.DataFrame([{
     "Spiders": spiders
 }])
 
-# ===============================
-# Prediction
-# ===============================
 if st.button("Predict Risk"):
-    # The 'model' is actually a Pipeline containing the preprocessor
-    # We pass the raw input_df directly to the pipeline
     risk = model.predict_proba(input_df)[0][1]
 
     st.divider()
@@ -99,7 +82,6 @@ if st.button("Predict Risk"):
         value=f"{risk*100:.1f} %"
     )
 
-    # Risk interpretation
     if risk < 0.2:
         st.success("Low estimated risk")
     elif risk < 0.5:
